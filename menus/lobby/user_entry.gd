@@ -1,21 +1,20 @@
 class_name LobbyUserEntry
-extends HBoxContainer
-
-const TEAM_NAMES: Array = [
-	"red",
-	"blue",
-]
+extends PanelContainer
 
 @export var username_label: Label
-@export var team_label: Label
-@export var host_label: Label
+@export var team_texture_rect: TextureRect
+@export var spectator_texture_rect: TextureRect
+@export var host_texture_rect: TextureRect
 
 
 func set_user(user: Dictionary, is_host: bool):
 	username_label.text = user.preferences.username
 	var team: int = user.team
 	if team == -1:
-		team_label.text = "Spectating."
+		team_texture_rect.hide()
+		spectator_texture_rect.show()
 	else:
-		team_label.text = "Playing as %s." % TEAM_NAMES[user.team]
-	host_label.visible = is_host
+		spectator_texture_rect.hide()
+		team_texture_rect.show()
+		team_texture_rect.self_modulate = GlobalConstants.TEAM_COLORS[team]
+	host_texture_rect.visible = is_host

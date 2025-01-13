@@ -16,8 +16,8 @@ enum Types {
 
 var type: Types = Types.MIDDLE:
 		set = set_type
-var color: Color:
-		set = set_color
+var team: int:
+		set = set_team
 var direction: Runner.Directions:
 		set = set_direction
 
@@ -33,9 +33,9 @@ func set_type(value: Types) -> void:
 			sprite.texture = end_texture
 
 
-func set_color(value: Color) -> void:
-	color = value
-	sprite.modulate = Color(color, 0.5)
+func set_team(value: int) -> void:
+	team = value
+	sprite.modulate = Color(GlobalConstants.TEAM_COLORS[team], 0.5)
 
 
 func set_direction(value: Runner.Directions) -> void:

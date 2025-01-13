@@ -4,7 +4,6 @@ const HEXAGON_HEIGHT: float = 0.86602540378
 const BOARD_SCALE: Vector2 = Vector2(100.0, 75.0)
 
 @export var runner: Runner
-@export var team_colors: Array[Color]
 @export var board: Node2D
 @export var ui: Ui
 @export var tile_scene: PackedScene
@@ -118,7 +117,7 @@ func _update_move_indicators(player_id: int, movement: Dictionary) -> void:
 	start_indicator.position = _get_tile_visual_pos(player.position)
 	start_indicator.position -= start_indicator.center.position
 	start_indicator.type = MoveIndicator.Types.START
-	start_indicator.color = team_colors[player.team]
+	start_indicator.team = player.team
 	start_indicator.direction = movement.direction
 	board.add_child(start_indicator)
 	_move_indicators[player_id].append(start_indicator)
@@ -129,7 +128,7 @@ func _update_move_indicators(player_id: int, movement: Dictionary) -> void:
 		middle_indicator.position = _get_tile_visual_pos(indicator_pos)
 		middle_indicator.position -= middle_indicator.center.position
 		middle_indicator.type = MoveIndicator.Types.MIDDLE
-		middle_indicator.color = team_colors[player.team]
+		middle_indicator.team = player.team
 		middle_indicator.direction = movement.direction
 		board.add_child(middle_indicator)
 		_move_indicators[player_id].append(middle_indicator)
@@ -138,7 +137,7 @@ func _update_move_indicators(player_id: int, movement: Dictionary) -> void:
 	end_indicator.position = _get_tile_visual_pos(indicator_pos)
 	end_indicator.position -= end_indicator.center.position
 	end_indicator.type = MoveIndicator.Types.END
-	end_indicator.color = team_colors[player.team]
+	end_indicator.type = player.team
 	end_indicator.direction = movement.direction
 	board.add_child(end_indicator)
 	_move_indicators[player_id].append(end_indicator)
@@ -163,7 +162,7 @@ func _players_first_draw() -> void:
 		var visual_player: VisualPlayer = player_scene.instantiate()
 		visual_player.position = _get_tile_visual_pos(player.position)
 		visual_player.position -= visual_player.center.position
-		visual_player.color = team_colors[player.team]
+		visual_player.color = GlobalConstants.TEAM_COLORS[player.team]
 		board.add_child(visual_player)
 		_players[id] = visual_player
 

@@ -26,7 +26,7 @@ func _add_user_to_list(id: int) -> void:
 	var new_entry: LobbyUserEntry = user_entry_scene.instantiate()
 	new_entry.set_user(room_info.users[id], id == 1)
 	user_entry_container.add_child(new_entry)
-	player_entries[id] = user_entry_container
+	player_entries[id] = new_entry
 
 
 func _remove_user_from_list(id: int) -> void:

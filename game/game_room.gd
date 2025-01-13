@@ -36,6 +36,7 @@ func _ready() -> void:
 		})
 
 
+# This function only gets called on the server
 func _client_connected(id: int) -> void:
 	_room_info_first_synch.rpc_id(id, _room_info)
 
@@ -82,6 +83,7 @@ func _user_join(id: int, user: Dictionary) -> void:
 	user_joined.emit(id)
 
 
+# This fucntion only gets called on the server
 func _client_disconnected(id: int) -> void:
 	_user_leave.rpc(id)
 

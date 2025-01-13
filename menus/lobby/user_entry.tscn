@@ -1,27 +1,71 @@
-[gd_scene load_steps=2 format=3 uid="uid://d1vcuh2h037t2"]
+[gd_scene load_steps=6 format=3 uid="uid://d1vcuh2h037t2"]
 
 [ext_resource type="Script" path="res://menus/lobby/user_entry.gd" id="1_aqadi"]
+[ext_resource type="Texture2D" uid="uid://c58yyfga5qsu2" path="res://game/visualizer/player/player_base.png" id="2_1j7ag"]
+[ext_resource type="Texture2D" uid="uid://0bbkcohsx2u2" path="res://game/visualizer/player/player_shine.png" id="3_uepuw"]
+[ext_resource type="Texture2D" uid="uid://l4lc0q4g241r" path="res://menus/lobby/spectatior_icon.png" id="4_81n87"]
+[ext_resource type="Texture2D" uid="uid://cmehkdl5a2irl" path="res://menus/lobby/host_icon.png" id="4_hdu1i"]
 
-[node name="UserEntry" type="HBoxContainer" node_paths=PackedStringArray("username_label", "team_label", "host_label")]
+[node name="UserEntry" type="PanelContainer" node_paths=PackedStringArray("username_label", "team_texture_rect", "spectator_texture_rect", "host_texture_rect")]
+offset_right = 221.0
+offset_bottom = 33.0
+script = ExtResource("1_aqadi")
+username_label = NodePath("MarginContainer/HBoxContainer/Username")
+team_texture_rect = NodePath("MarginContainer/HBoxContainer/HBoxContainer/Team")
+spectator_texture_rect = NodePath("MarginContainer/HBoxContainer/HBoxContainer/Spectator")
+host_texture_rect = NodePath("MarginContainer/HBoxContainer/HBoxContainer/Host")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
 theme_override_constants/separation = 50
 alignment = 2
-script = ExtResource("1_aqadi")
-username_label = NodePath("Username")
-team_label = NodePath("HBoxContainer/Team")
-host_label = NodePath("HBoxContainer/Host")
 
-[node name="Username" type="Label" parent="."]
+[node name="Username" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(300, 0)
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Team" type="Label" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="Host" type="Label" parent="HBoxContainer"]
+[node name="Team" type="TextureRect" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 visible = false
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "Host."
+texture = ExtResource("2_1j7ag")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Shine" type="TextureRect" parent="MarginContainer/HBoxContainer/HBoxContainer/Team"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_uepuw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Spectator" type="TextureRect" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+texture = ExtResource("4_81n87")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Host" type="TextureRect" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+texture = ExtResource("4_hdu1i")
+expand_mode = 1
+stretch_mode = 5

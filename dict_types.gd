@@ -31,8 +31,9 @@ static func is_dict_of_type(dict: Dictionary, type: StringName) -> bool:
 
 static func _is_value_of_type(value: Variant, type: Variant) -> bool:
 	if type is int:
-		if typeof(value) != type:
-			return false
+		if type != TYPE_NIL:
+			if typeof(value) != type:
+				return false
 	elif type is StringName:
 		if not value is Dictionary:
 			return false

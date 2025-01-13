@@ -1,11 +1,7 @@
 
 # Godot-specific ignores
-.import/
-export.cfg
-export_presets.cfg
+.godot/
 
-# Mono-specific ignores
-.mono/
-
-# Mac
+# System specific
 **/.DS_Store
+*~

@@ -1,0 +1,167 @@
+[gd_scene load_steps=3 format=3 uid="uid://djud3pv5780am"]
+
+[ext_resource type="Theme" uid="uid://b6oysbox7bkek" path="res://base_theme.tres" id="1_o4mxc"]
+[ext_resource type="Script" path="res://menus/connection_menu/connection_menu.gd" id="2_jlklv"]
+
+[node name="ConnectionMenu" type="Control" node_paths=PackedStringArray("username_line_edit", "ip_line_edit", "port_line_edit", "connecting_screen", "connection_failed_screen")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_o4mxc")
+script = ExtResource("2_jlklv")
+username_line_edit = NodePath("VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit")
+ip_line_edit = NodePath("VBoxContainer2/VBoxContainer/HBoxContainer2/LineEdit")
+port_line_edit = NodePath("VBoxContainer2/VBoxContainer/HBoxContainer3/LineEdit")
+connecting_screen = NodePath("Connecting")
+connection_failed_screen = NodePath("ConnectionFailed")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+alignment = 2
+
+[node name="Label" type="Label" parent="VBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Username: "
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer2/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+max_length = 20
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+alignment = 2
+
+[node name="Label" type="Label" parent="VBoxContainer2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "IP: "
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer2/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+alignment = 2
+
+[node name="Label" type="Label" parent="VBoxContainer2/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Port: "
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer2/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="Create" type="Button" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Create"
+
+[node name="Join" type="Button" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Join"
+
+[node name="Connecting" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Connecting"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.5
+offset_top = -75.0
+offset_right = 210.5
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Connecting/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Connecting..."
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="Connecting/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cancel"
+
+[node name="ConnectionFailed" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConnectionFailed"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -204.0
+offset_top = -34.5
+offset_right = 204.0
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="ConnectionFailed/VBoxContainer"]
+layout_mode = 2
+text = "Connection failed."
+
+[node name="Button" type="Button" parent="ConnectionFailed/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Ok"
+
+[connection signal="pressed" from="VBoxContainer2/HBoxContainer/Create" to="." method="_on_create_pressed"]
+[connection signal="pressed" from="VBoxContainer2/HBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="Connecting/VBoxContainer/Button" to="." method="on_cancel_connection_button_pressed"]
+[connection signal="pressed" from="ConnectionFailed/VBoxContainer/Button" to="ConnectionFailed" method="hide"]

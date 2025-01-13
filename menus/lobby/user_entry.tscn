@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1vcuh2h037t2"]
+
+[ext_resource type="Script" path="res://menus/lobby/user_entry.gd" id="1_aqadi"]
+
+[node name="UserEntry" type="HBoxContainer" node_paths=PackedStringArray("username_label", "team_label", "host_label")]
+theme_override_constants/separation = 50
+alignment = 2
+script = ExtResource("1_aqadi")
+username_label = NodePath("Username")
+team_label = NodePath("HBoxContainer/Team")
+host_label = NodePath("HBoxContainer/Host")
+
+[node name="Username" type="Label" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Team" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Host" type="Label" parent="HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Host."

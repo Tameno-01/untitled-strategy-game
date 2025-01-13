@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://k0p1phddes0l"]
+
+[ext_resource type="Script" path="res://game/visualizer/move_indicator/move_indicator.gd" id="1_1d5p5"]
+[ext_resource type="Texture2D" uid="uid://cxu6hswic3el7" path="res://game/visualizer/move_indicator/move_indicator_start.png" id="2_3ha22"]
+[ext_resource type="Texture2D" uid="uid://f2vut38nvrn6" path="res://game/visualizer/move_indicator/move_indicator.png" id="2_nexxt"]
+[ext_resource type="Texture2D" uid="uid://7getaum80oaq" path="res://game/visualizer/move_indicator/move_indicator_end.png" id="4_nkecd"]
+
+[node name="MoveIndicator" type="Node2D" node_paths=PackedStringArray("center", "sprite")]
+script = ExtResource("1_1d5p5")
+center = NodePath("Center")
+start_texture = ExtResource("2_3ha22")
+middle_texture = ExtResource("2_nexxt")
+end_texture = ExtResource("4_nkecd")
+sprite = NodePath("Center/MoveIndicator")
+
+[node name="Center" type="Node2D" parent="."]
+position = Vector2(0, 38)
+scale = Vector2(1, 0.75)
+
+[node name="MoveIndicator" type="Sprite2D" parent="Center"]
+modulate = Color(1, 1, 1, 0.5)
+scale = Vector2(0.785409, 0.785409)
+texture = ExtResource("2_nexxt")

@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6h3ea8f6pqce"]
+
+[ext_resource type="Script" path="res://game/visualizer/visualizer.gd" id="1_cr48i"]
+[ext_resource type="PackedScene" uid="uid://jt8eeqfm4x88" path="res://game/visualizer/tile/tile.tscn" id="2_fwq7i"]
+[ext_resource type="PackedScene" uid="uid://dtvfw8gnp2r0y" path="res://game/visualizer/player/player.tscn" id="3_3ol8j"]
+[ext_resource type="PackedScene" uid="uid://k0p1phddes0l" path="res://game/visualizer/move_indicator/move_indicator.tscn" id="4_qgeef"]
+[ext_resource type="PackedScene" uid="uid://dk4l70rtyeb6l" path="res://game/visualizer/ui/ui.tscn" id="5_2bcr6"]
+
+[node name="Visualizer" type="Node2D" node_paths=PackedStringArray("board", "ui")]
+script = ExtResource("1_cr48i")
+team_colors = Array[Color]([Color(0.85, 0.247917, 0.1275, 1), Color(0, 0.616667, 1, 1)])
+board = NodePath("Board")
+ui = NodePath("CanvasLayer/Ui")
+tile_scene = ExtResource("2_fwq7i")
+player_scene = ExtResource("3_3ol8j")
+move_indicator_scene = ExtResource("4_qgeef")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+
+[node name="Board" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="Ui" parent="CanvasLayer" instance=ExtResource("5_2bcr6")]
+
+[connection signal="submit_pressed" from="CanvasLayer/Ui" to="." method="_submit"]

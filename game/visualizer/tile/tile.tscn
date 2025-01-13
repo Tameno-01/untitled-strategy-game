@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://jt8eeqfm4x88"]
+
+[ext_resource type="Script" path="res://game/visualizer/tile/tile.gd" id="1_q2ldh"]
+[ext_resource type="Texture2D" uid="uid://bttih0udk3sgk" path="res://game/visualizer/tile/tile.png" id="2_7gkmi"]
+[ext_resource type="Texture2D" uid="uid://de3fx7ndc2ndr" path="res://game/visualizer/tile/tile_cracked.png" id="2_c0nf8"]
+[ext_resource type="Texture2D" uid="uid://b28fod1kcg8o6" path="res://game/visualizer/tile/tile_anchor.png" id="2_sq4nl"]
+
+[node name="Tile" type="Node2D" node_paths=PackedStringArray("center", "sprite")]
+script = ExtResource("1_q2ldh")
+center = NodePath("Center")
+ground_texture = ExtResource("2_7gkmi")
+damaged_texture = ExtResource("2_c0nf8")
+anchor_texture = ExtResource("2_sq4nl")
+sprite = NodePath("Center/Origin/Sprite")
+
+[node name="Center" type="Node2D" parent="."]
+position = Vector2(0, 40)
+
+[node name="Origin" type="Node2D" parent="Center"]
+position = Vector2(0, -40)
+
+[node name="Sprite" type="Sprite2D" parent="Center/Origin"]
+position = Vector2(0, 50)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("2_7gkmi")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://lilm76ky8qss"]
+
+[ext_resource type="Script" path="res://game/game_room.gd" id="1_pk4kf"]
+[ext_resource type="PackedScene" uid="uid://div60brr0lo66" path="res://menus/lobby/lobby.tscn" id="2_kw8dv"]
+[ext_resource type="PackedScene" uid="uid://f2fwvol3gyur" path="res://game/game.tscn" id="3_gdbhb"]
+
+[node name="GameRoom" type="Node"]
+script = ExtResource("1_pk4kf")
+lobby_scene = ExtResource("2_kw8dv")
+game_scene = ExtResource("3_gdbhb")

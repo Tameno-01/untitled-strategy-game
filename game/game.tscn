@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://f2fwvol3gyur"]
+
+[ext_resource type="Script" path="res://game/runner/runner.gd" id="1_qux5m"]
+[ext_resource type="PackedScene" uid="uid://c6h3ea8f6pqce" path="res://game/visualizer/visualizer.tscn" id="2_gv16v"]
+
+[node name="Game" type="Node"]
+
+[node name="Runner" type="Node" parent="."]
+script = ExtResource("1_qux5m")
+
+[node name="Visualizer" parent="." node_paths=PackedStringArray("runner") instance=ExtResource("2_gv16v")]
+runner = NodePath("../Runner")

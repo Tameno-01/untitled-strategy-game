@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://dk4l70rtyeb6l"]
+
+[ext_resource type="Theme" uid="uid://b6oysbox7bkek" path="res://base_theme.tres" id="1_0odi5"]
+[ext_resource type="Script" path="res://game/visualizer/ui/ui.gd" id="2_8wdx5"]
+
+[node name="Ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_0odi5")
+script = ExtResource("2_8wdx5")
+metadata/_edit_use_anchors_ = true
+
+[node name="Submit" type="Button" parent="."]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -134.0
+offset_right = 150.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 0
+text = "Submit"
+
+[connection signal="pressed" from="Submit" to="." method="_on_submit_pressed"]

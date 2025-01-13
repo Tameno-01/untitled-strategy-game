@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtvfw8gnp2r0y"]
+
+[ext_resource type="Texture2D" uid="uid://c58yyfga5qsu2" path="res://game/visualizer/player/player_base.png" id="1_oub7y"]
+[ext_resource type="Script" path="res://game/visualizer/player/player.gd" id="1_wenhu"]
+[ext_resource type="Texture2D" uid="uid://0bbkcohsx2u2" path="res://game/visualizer/player/player_shine.png" id="2_ap7ro"]
+
+[node name="Player" type="Node2D" node_paths=PackedStringArray("center", "base_sprite")]
+script = ExtResource("1_wenhu")
+center = NodePath("Center")
+base_sprite = NodePath("Center/Origin/Base")
+
+[node name="Center" type="Node2D" parent="."]
+position = Vector2(0, -18)
+
+[node name="Origin" type="CanvasGroup" parent="Center"]
+position = Vector2(0, 18)
+
+[node name="Base" type="Sprite2D" parent="Center/Origin"]
+position = Vector2(0, -28)
+scale = Vector2(0.22, 0.22)
+texture = ExtResource("1_oub7y")
+
+[node name="Shine" type="Sprite2D" parent="Center/Origin/Base"]
+texture = ExtResource("2_ap7ro")

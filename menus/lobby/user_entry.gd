@@ -10,6 +10,11 @@ extends PanelContainer
 func set_user(user: Dictionary, is_host: bool) -> void:
 	username_label.text = user.preferences.username
 	var team: int = user.team
+	set_team(team)
+	host_texture_rect.visible = is_host
+
+
+func set_team(team: int) -> void:
 	if team == -1:
 		team_texture_rect.hide()
 		spectator_texture_rect.show()
@@ -17,4 +22,3 @@ func set_user(user: Dictionary, is_host: bool) -> void:
 		spectator_texture_rect.hide()
 		team_texture_rect.show()
 		team_texture_rect.self_modulate = GlobalConstants.TEAM_COLORS[team]
-	host_texture_rect.visible = is_host

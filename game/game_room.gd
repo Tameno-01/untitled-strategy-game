@@ -3,6 +3,8 @@ extends Node
 
 signal user_joined(id: int)
 signal user_left(id: int)
+signal user_joined_as_non_spectator(id: int, team: int)
+signal user_switched_to_spectator(id: int)
 
 enum States {
 	NONE,
@@ -58,9 +60,53 @@ func leave(message: String = "") -> void:
 	Utils.change_scene_to_node(get_tree(), main_menu)
 
 
+func join_as_non_spectator() -> void:
+	_join_as_non_spectator_request.rpc_id(1)
+
+
+func switch_to_spectator() -> void:
+	_switch_to_spectator_request.rpc_id(1)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _join_as_non_spectator_request() -> void:
+	if not multiplayer.is_server():
+		return
+	var caller_id: int = multiplayer.get_remote_sender_id()
+	if room_info.users[caller_id].team != -1:
+		return
+	var team: int = _get_first_available_team()
+	if team == -1:
+		return
+	_user_joined_as_non_spectator.rpc(caller_id, team)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _switch_to_spectator_request() -> void:
+	if not multiplayer.is_server():
+		return
+	var caller_id: int = multiplayer.get_remote_sender_id()
+	if room_info.users[caller_id].team == -1:
+		return
+	_user_switched_to_spectator.rpc(caller_id)
+
+
+@rpc("authority", "call_local", "reliable")
+func _user_joined_as_non_spectator(id: int, team: int) -> void:
+	room_info.users[id].team = team
+	user_joined_as_non_spectator.emit(id, team)
+
+
+@rpc("authority", "call_local", "reliable")
+func _user_switched_to_spectator(id: int) -> void:
+	room_info.users[id].team = -1
+	user_switched_to_spectator.emit(id)
+
+
 # This function only gets called on the server
 func _on_client_connected(id: int) -> void:
 	_room_info_first_synch.rpc_id(id, room_info)
+	
 
 
 @rpc("authority", "call_local", "reliable")

@@ -1,9 +1,5 @@
 extends Control
 
-
-const game_room_scene: PackedScene = preload("res://game/game_room.tscn")
-
-
 @export var username_line_edit: LineEdit
 @export var ip_line_edit: LineEdit
 @export var port_line_edit: LineEdit
@@ -55,14 +51,17 @@ func _on_connection_failed() -> void:
 
 
 func go_to_game_room(user_preferences: Dictionary) -> void:
-	get_tree().current_scene.queue_free()
+	var game_room_scene: PackedScene = load("res://game/game_room.tscn")
 	var game_room: Node = game_room_scene.instantiate()
 	game_room.local_user_preferences = user_preferences
-	get_tree().root.add_child(game_room)
-	get_tree().current_scene = game_room
+	Utils.change_scene_to_node(get_tree(), game_room)
 
 
 func _get_user_preferences() -> Dictionary:
 	return {
 		&"username": username_line_edit.text
 	}
+
+
+func _on_back_pressed() -> void:
+	get_tree().change_scene_to_file("res://menus/main_menu/main_menu.tscn")

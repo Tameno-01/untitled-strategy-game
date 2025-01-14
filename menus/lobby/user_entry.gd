@@ -7,7 +7,7 @@ extends PanelContainer
 @export var host_texture_rect: TextureRect
 
 
-func set_user(user: Dictionary, is_host: bool):
+func set_user(user: Dictionary, is_host: bool) -> void:
 	username_label.text = user.preferences.username
 	var team: int = user.team
 	if team == -1:

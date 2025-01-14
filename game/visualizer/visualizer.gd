@@ -1,3 +1,4 @@
+class_name Visualizer
 extends Node2D
 
 const HEXAGON_HEIGHT: float = 0.86602540378 
@@ -137,7 +138,7 @@ func _update_move_indicators(player_id: int, movement: Dictionary) -> void:
 	end_indicator.position = _get_tile_visual_pos(indicator_pos)
 	end_indicator.position -= end_indicator.center.position
 	end_indicator.type = MoveIndicator.Types.END
-	end_indicator.type = player.team
+	end_indicator.team = player.team
 	end_indicator.direction = movement.direction
 	board.add_child(end_indicator)
 	_move_indicators[player_id].append(end_indicator)

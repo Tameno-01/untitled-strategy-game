@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://menus/lobby/lobby.gd" id="2_itpti"]
 [ext_resource type="PackedScene" uid="uid://d1vcuh2h037t2" path="res://menus/lobby/user_entry.tscn" id="3_x4icr"]
 
-[node name="Lobby" type="Control" node_paths=PackedStringArray("user_entry_container")]
+[node name="Lobby" type="Control" node_paths=PackedStringArray("user_entry_container", "join_button", "spectate_button", "start_button", "info_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,33 +13,73 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_4fy54")
 script = ExtResource("2_itpti")
-user_entry_container = NodePath("VBoxContainer/VBoxContainer")
+user_entry_container = NodePath("Users")
+join_button = NodePath("MarginContainer/VBoxContainer/Join")
+spectate_button = NodePath("MarginContainer/VBoxContainer/Spectate")
+start_button = NodePath("MarginContainer/VBoxContainer/Start")
+info_label = NodePath("MarginContainer/VBoxContainer/Info")
 user_entry_scene = ExtResource("3_x4icr")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Users" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_top = -115.0
+offset_bottom = -115.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 100
-alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 50
 
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Join" type="Button" parent="MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Play"
+text = "Join"
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Spectate" type="Button" parent="MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
-text = "Waiting for host to start."
+size_flags_horizontal = 4
+text = "Spectate"
+
+[node name="Start" type="Button" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Start
+"
+
+[node name="Info" type="Label" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Leave" type="Button" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Leave"
+
+[connection signal="pressed" from="MarginContainer/Leave" to="." method="_leave"]

@@ -90,3 +90,7 @@ func _on_join_pressed() -> void:
 
 func _on_spectate_pressed() -> void:
 	game_room.switch_to_spectator()
+
+
+func _on_start_pressed() -> void:
+	game_room.start_game()

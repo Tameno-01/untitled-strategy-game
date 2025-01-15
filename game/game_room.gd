@@ -68,6 +68,27 @@ func switch_to_spectator() -> void:
 	_switch_to_spectator_request.rpc_id(1)
 
 
+func start_game() -> void:
+	_start_game_request.rpc_id(1)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _start_game_request() -> void:
+	if not multiplayer.is_server():
+		return
+	var caller_id: int = multiplayer.get_remote_sender_id()
+	if caller_id != room_info.host:
+		return
+	if not get_game_start_problem().is_empty():
+		return
+	_start_game.rpc()
+
+
+@rpc("authority", "call_local", "reliable")
+func _start_game() -> void:
+	_current_state = States.GAME
+
+
 @rpc("any_peer", "call_local", "reliable")
 func _join_as_non_spectator_request() -> void:
 	if not multiplayer.is_server():
@@ -81,6 +102,12 @@ func _join_as_non_spectator_request() -> void:
 	_user_joined_as_non_spectator.rpc(caller_id, team)
 
 
+@rpc("authority", "call_local", "reliable")
+func _user_joined_as_non_spectator(id: int, team: int) -> void:
+	room_info.users[id].team = team
+	user_joined_as_non_spectator.emit(id, team)
+
+
 @rpc("any_peer", "call_local", "reliable")
 func _switch_to_spectator_request() -> void:
 	if not multiplayer.is_server():
@@ -92,12 +119,6 @@ func _switch_to_spectator_request() -> void:
 
 
 @rpc("authority", "call_local", "reliable")
-func _user_joined_as_non_spectator(id: int, team: int) -> void:
-	room_info.users[id].team = team
-	user_joined_as_non_spectator.emit(id, team)
-
-
-@rpc("authority", "call_local", "reliable")
 func _user_switched_to_spectator(id: int) -> void:
 	room_info.users[id].team = -1
 	user_switched_to_spectator.emit(id)
@@ -106,7 +127,6 @@ func _user_switched_to_spectator(id: int) -> void:
 # This function only gets called on the server
 func _on_client_connected(id: int) -> void:
 	_room_info_first_synch.rpc_id(id, room_info)
-	
 
 
 @rpc("authority", "call_local", "reliable")
@@ -135,7 +155,7 @@ func _join_request(user_preferences: Dictionary) -> void:
 	if not Utils.is_user_preferences_valid(user_preferences):
 		multiplayer.multiplayer_peer.disconnect_peer(caller_id)
 		return
-	var new_user_team: int = _get_first_available_team()
+	var new_user_team: int = _get_first_available_team() if room_info.state == States.LOBBY else -1
 	_user_join.rpc(
 			caller_id,
 			{
@@ -179,6 +199,7 @@ func _set_current_state(value: States) -> void:
 	if _current_state == value:
 		return
 	_current_state = value
+	room_info.state = _current_state
 	match _current_state:
 		States.NONE:
 			assert(false, "NONE state is only for starting out the room.")

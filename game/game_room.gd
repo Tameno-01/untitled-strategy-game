@@ -214,6 +214,6 @@ func _set_current_state(value: States) -> void:
 			if _current_state_node != null:
 				_current_state_node.queue_free()
 			var game: Game = game_scene.instantiate()
-			game.set_local_team(room_info.users[multiplayer.get_unique_id()].team)
+			game.set_game_room(self)
 			add_child(game)
 			_current_state_node = game

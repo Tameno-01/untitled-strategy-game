@@ -4,8 +4,9 @@
 [ext_resource type="Script" path="res://game/runner/runner.gd" id="1_qux5m"]
 [ext_resource type="PackedScene" uid="uid://c6h3ea8f6pqce" path="res://game/visualizer/visualizer.tscn" id="2_gv16v"]
 
-[node name="Game" type="Node" node_paths=PackedStringArray("visualizer")]
+[node name="Game" type="Node" node_paths=PackedStringArray("runner", "visualizer")]
 script = ExtResource("1_m51lu")
+runner = NodePath("Runner")
 visualizer = NodePath("Visualizer")
 
 [node name="Runner" type="Node" parent="."]

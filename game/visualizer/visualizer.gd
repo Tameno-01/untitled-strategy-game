@@ -11,8 +11,9 @@ const BOARD_SCALE: Vector2 = Vector2(100.0, 75.0)
 @export var player_scene: PackedScene
 @export var move_indicator_scene: PackedScene
 
-var local_team: int
+var game_room: GameRoom
 
+var _local_team: int
 var _players: Dictionary = {}
 var _selected_player: int = -1
 var _current_turn: Dictionary
@@ -22,6 +23,7 @@ var _locked: bool = false:
 
 
 func _ready() -> void:
+	_local_team = game_room.room_info.users[multiplayer.get_unique_id()].team
 	_board_first_draw()
 	_players_first_draw()
 	_reset_curent_turn()
@@ -57,7 +59,7 @@ func _select_player(mouse_pos: Vector2) -> void:
 	if player_id == -1:
 		return
 	var player: Dictionary = runner.get_player(player_id)
-	if player.team != local_team:
+	if player.team != _local_team:
 		return
 	_selected_player = player_id
 	_update_player_movement(mouse_pos)
@@ -71,7 +73,6 @@ func _deselect_player() -> void:
 
 func _reset_curent_turn() -> void:
 	_current_turn = {
-		&"team": local_team,
 		&"movements": {},
 	}
 

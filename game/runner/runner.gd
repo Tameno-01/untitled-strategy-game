@@ -22,10 +22,14 @@ var grid_size: int = 7
 var anchor_locations: Array[Vector2i] = [
 	Vector2i(0, 0),
 ]
+var game_room: GameRoom
 
 var _tiles: Dictionary = {}
 var _players: Dictionary = {}
 var _last_id: int = -1
+var _turn_submissions: Dictionary = {}
+var _lock_happened: bool
+var _locked_tiles: Dictionary = {}
 
 
 func _ready() -> void:
@@ -83,11 +87,76 @@ func get_player_in_tile(position: Vector2i) -> int:
 
 
 func submit(turn: Dictionary) -> void:
-	pass
+	_recieve_submission.rpc_id(1, turn)
 
 
+func _get_tile_lockstate(tile: Vector2i) -> LockState:
+	return _locked_tiles.get(tile, LockState.new())
+
+
+func _set_tile_lockstate(tile: Vector2i, state: LockState) -> void:
+	if state.type == LockState.Types.NONE:
+		_locked_tiles.erase(tile)
+	_locked_tiles[tile] = state
+
+
+@rpc("any_peer", "call_local", "reliable")
 func _recieve_submission(turn: Dictionary) -> void:
-	pass
+	if not multiplayer.is_server():
+		return
+	if not DictTypes.is_dict_of_type(turn, &"Turn"):
+		return
+	var team: int = game_room.room_info.users[multiplayer.get_remote_sender_id()].team
+	_turn_submissions[team] = turn
+	if _turn_submissions.size() == 2:
+		_do_turn()
+
+
+func _do_turn() -> Array[Array]:
+	var steps: Array[Array] = []
+	var fallen_pieces_step: Array = []
+	for player_id in _players:
+		var player: Dictionary = _players[player_id]
+		_set_tile(player.position, TileTypes.AIR)
+		fallen_pieces_step.append({
+			&"type": &"tile_fall",
+			&"tile": player.position,
+		})
+	steps.append(fallen_pieces_step)
+	while true:
+		_lock_happened = true
+		while _lock_happened:
+			_lock_happened = false
+			_update_lock_states()
+			# Stopped at: 'Update the lock state of all tiles'
+	return steps
+
+
+func _update_lock_states() -> void:
+	for player_id in _players:
+		var player: Dictionary = _players[player_id]
+		var next_tile: Vector2i = _determine_player_next_tile(player_id)
+		var prev_lock_state: LockState = _get_tile_lockstate(next_tile)
+		var lock_state: LockState = LockState.new()
+		var movement: Dictionary = _turn_submissions[player.team][player_id]
+		if movement.distance < 2:
+			lock_state.type = LockState.Types.STOP
+		else:
+			lock_state.type = LockState.Types.MOVE
+		lock_state.team = player.team
+		var new_lock_state: LockState = prev_lock_state.combine_with(lock_state)
+		if not new_lock_state.is_identical_to(prev_lock_state):
+			_lock_happened = true
+		_set_tile_lockstate(next_tile, new_lock_state)
+
+
+func _determine_player_next_tile(player_id: int) -> Vector2i:
+	var player: Dictionary = _players[player_id]
+	var movement: Dictionary = _turn_submissions[player.team][player_id]
+	if movement.distance == 0:
+		return player.position
+	var direction: Directions = movement.direction as Directions
+	return get_neigbour(player.position, direction)
 
 
 func _set_tile(position: Vector2i, type: TileTypes) -> void:
@@ -99,6 +168,7 @@ func _set_tile(position: Vector2i, type: TileTypes) -> void:
 
 func get_all_player_ids() -> Array:
 	return _players.keys()
+
 
 func _create_board_base() -> void:
 	for y in range(-(grid_size - 1) / 2, (grid_size + 1) / 2):

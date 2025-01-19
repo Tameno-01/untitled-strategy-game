@@ -7,7 +7,6 @@ const TYPES: Dictionary = {
 		&"distance": TYPE_INT
 	},
 	&"Turn": {
-		&"team": TYPE_INT,
 		&"movements": [TYPE_INT, &"PlayerMovement"],
 	},
 	&"UserProperties": {
